@@ -1,0 +1,19 @@
+.Character {
+    max-height: 15vh;
+    min-width: 30vw;
+    box-shadow: 4px 3px 20px 0px rgba(104, 103, 107, 1);
+    display: flex;
+    justify-content: space-around;
+    margin: 1rem 2rem 1rem 0;
+    border-radius: 13px;
+    padding: 3rem;
+    -webkit-transition: all 1.2s; /* For Safari 3.1 to 6.0 */
+    transition: all 1.2s;
+}
+
+.Character:hover{
+    transform:scale(1.05);
+}
+.Hide{
+    display: none;
+}
