@@ -12,10 +12,11 @@ import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 
 import "./CharacterList.css";
 
-class CharactersList extends Component {
+export class CharactersList extends Component {
   componentDidMount() {
     this.props.onFetchSuccess(this.props.currentPage, "", "");
   }
+  
   onSearchClick = () => {
     this.props.onFetchSuccess(
       this.props.currentPage,
@@ -23,16 +24,18 @@ class CharactersList extends Component {
       this.props.searchedChar
     );
   };
+
   handlePageClick = async page => {
     await this.props.handlePageClick(page);
-    this.props.onFetchSuccess(this.props.currentPage, "", "");
+    this.props.onFetchSuccess(
+      this.props.currentPage,
+      this.props.filterAliveChars,
+      ""
+    );
   };
 
   renderChars() {
-    const {
-      characters,
-      searchedChar
-    } = this.props;
+    const { characters, searchedChar } = this.props;
     const textItemRender = (current, type, element) => {
       if (type === "prev") {
         return "Prev";
@@ -53,24 +56,26 @@ class CharactersList extends Component {
         />
         {characters.length > 0 ? (
           <div className="List">
-            {characters.map((character, id) => (
-              <Character
-                key={id}
-                character={character}
-                searchedChar={this.props.searchedChar}
-              />
-            ))}
-            {characters.length < 5 ? null : (
+            {characters.map((character, id) => {
+              return (
+                <Character
+                  key={id}
+                  character={character}
+                  searchedChar={this.props.searchedChar}
+                />
+              );
+            })}
+            {characters.length > 4 ? (
               <Pagination
                 itemRender={textItemRender}
                 onChange={this.handlePageClick}
                 current={this.props.currentPage}
                 total={200}
               />
-            )}
+            ) : null}
           </div>
         ) : (
-          "No characters found."
+          <p>No characters found.</p>
         )}
       </Fragment>
     );
@@ -78,10 +83,12 @@ class CharactersList extends Component {
 
   render() {
     const { loading } = this.props;
+    let content = <Spinner />;
+    if (!loading) content = this.renderChars();
     return (
       <div className="Container">
         <h2>List of Characters</h2>
-        {loading ? <Spinner /> : this.renderChars()}
+        {content}
       </div>
     );
   }

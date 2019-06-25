@@ -2,7 +2,7 @@ import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
   chars: [],
-  loading: false,
+  loading: true,
   currentPage: 1,
   pageSize: 5,
   error: null,
@@ -14,7 +14,7 @@ const fetchCharsStart = state => ({ ...state, loading: true });
 
 const fetchCharsSuccess = (state, action) => ({
   ...state,
-  chars: [...action.chars],
+  chars: action.chars,
   loading: false
 });
 
@@ -42,7 +42,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.FETCH_CHARS_SUCCESS:
       return fetchCharsSuccess(state, action);
     case actionTypes.FETCH_CHARS_FAIL:
-      return fetchCharsFail(state);
+      return fetchCharsFail(state, action);
     case actionTypes.TOGGLE_ALIVE_CHARS:
       return toggleAliveChars(state);
     case actionTypes.UPDATE_SEARCH_INPUT:

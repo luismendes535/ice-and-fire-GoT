@@ -1,21 +1,21 @@
 .SearchBar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  max-width: 30%;
-  max-height: 2rem;
 }
 .Input {
+  margin-right: 1rem;
   box-shadow: 4px 3px 20px 0px rgba(104, 103, 107, 1);
   border-radius: 3px;
   padding: 5px;
 }
 
 .Checkbox {
+  margin-right: 1rem;
   cursor: pointer;
 }
 
 .Button {
+  margin-left: 1rem; 
   box-shadow: 4px 3px 20px 0px rgba(104, 103, 107, 1);
   padding: 0.5rem 1rem;
   background-color: white;

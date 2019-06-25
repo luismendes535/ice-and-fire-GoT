@@ -5,29 +5,40 @@ import moment from "moment";
 const Character = props => {
   return (
     <div className={"Character"}>
-      <div>
-        <p>
+      {props.character.name && (
+        <div>
           <b>Name: </b>
-          {props.character.name}
-        </p>
-        <p>
-          <b>Gender: </b>
-          {props.character.gender}
-        </p>
-        <p>
-          <b>Is alive: </b>
-          {!props.character.died ? "Yes" : "No"}
-        </p>
+          <div>{props.character.name}</div>
+        </div>
+      )}
+      {props.character.aliases && (
+        <div className={"Aliases"}>
+          <b>Aliases: </b>
+          <ul>
+            {props.character.aliases.map((alias, index) => (
+              <li>{(index ? ", " : "") + alias}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <div>
+        <b>Gender: </b>
+        <div>{props.character.gender}</div>
+      </div>
+      <div>
+        <b>Is alive: </b>
+        <div>{!props.character.died ? "Yes" : "No"}</div>
       </div>
       <div className={"Books"}>
         <b>Appear on: </b>
-        {props.character.fetchedBooks && props.character.fetchedBooks.map(book => {
-              return (
-                <p>
-                  {book.name} - {moment(book.released).format("MMMM Do YYYY")}
-                </p>
-              );
-            })}
+        <ul>
+          {props.character.fetchedBooks &&
+            props.character.fetchedBooks.map((book, id) => (
+              <li key={id}>
+                {book.name} - {moment(book.released).format("MMMM Do YYYY")}
+              </li>
+            ))}
+        </ul>
       </div>
     </div>
   );

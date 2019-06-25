@@ -3,9 +3,9 @@ import axios from "axios";
 
 export const fetchChars = (currentPage, isAlive, name) => {
   return dispatch => {
-    let query = `?`;
-    if (currentPage) query += `page=${currentPage}`;
-    if (typeof isAlive === "boolean") query += `&isAlive=${isAlive}`;
+    let query = `?pageSize=5`;
+    if (currentPage) query += `&page=${currentPage}`;
+    if (isAlive) query += `&isAlive=${isAlive}`;
     if (name) query += `&name=${name}`;
     dispatch(fetchCharsStart());
     axios
@@ -14,24 +14,29 @@ export const fetchChars = (currentPage, isAlive, name) => {
         return data;
       })
       .then(async characters => {
-        //Fetching books...
-        let charsWithBooks = characters;
-        await charsWithBooks.map(async (char, charId) => {
-          const fetchedBooks = [];
-          return await char.books.map(url => {
-            axios.get(url).then(({ data }) => {
-              charsWithBooks[charId].fetchedBooks = fetchedBooks.concat(data);
+        //Iterating all characters
+        for (let i = 0; i < characters.length; i++) {
+          characters[i].fetchedBooks = [];
+          //Iterating books for each character...
+          for (let j = 0; j < characters[i].books.length; j++) {
+            await axios.get(characters[i].books[j]).then(({ data }) => {
+              console.log("Fetching...");
+              characters[i].fetchedBooks.push({
+                name: data.name,
+                released: data.released
+              });
             });
-          });
-        });
-        return dispatch(fetchCharsSuccess(charsWithBooks));
+          }
+        }
+        console.log("Characters: ", characters);
+        dispatch(fetchCharsSuccess(characters));
       })
       .catch(err => {
+        console.log(err);
         dispatch(fetchCharsFail(err));
       });
   };
 };
-
 export const fetchCharsSuccess = chars => {
   return {
     type: actionType.FETCH_CHARS_SUCCESS,
