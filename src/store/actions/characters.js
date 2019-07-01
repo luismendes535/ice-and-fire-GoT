@@ -8,7 +8,7 @@ export const fetchChars = (currentPage, isAlive, name) => {
     if (isAlive) query += `&isAlive=${isAlive}`;
     if (name) query += `&name=${name}`;
     dispatch(fetchCharsStart());
-    axios
+    return axios
       .get(`https://www.anapioficeandfire.com/api/characters${query}`)
       .then(({ data }) => {
         return data;
@@ -20,7 +20,6 @@ export const fetchChars = (currentPage, isAlive, name) => {
           //Iterating books for each character...
           for (let j = 0; j < characters[i].books.length; j++) {
             await axios.get(characters[i].books[j]).then(({ data }) => {
-              console.log("Fetching...");
               characters[i].fetchedBooks.push({
                 name: data.name,
                 released: data.released
@@ -28,12 +27,10 @@ export const fetchChars = (currentPage, isAlive, name) => {
             });
           }
         }
-        console.log("Characters: ", characters);
         dispatch(fetchCharsSuccess(characters));
       })
       .catch(err => {
-        console.log(err);
-        dispatch(fetchCharsFail(err));
+        dispatch(fetchCharsFail(err.message));
       });
   };
 };

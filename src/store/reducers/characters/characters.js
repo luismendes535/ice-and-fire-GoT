@@ -1,4 +1,4 @@
-import * as actionTypes from "../actions/actionTypes";
+import * as actionTypes from "../../actions/actionTypes";
 
 const initialState = {
   chars: [],
@@ -18,7 +18,7 @@ const fetchCharsSuccess = (state, action) => ({
   loading: false
 });
 
-const fetchCharsFail = (state, action) => ({ ...state, loading: false, error: action });
+const fetchCharsFail = (state, action) => ({ ...state, loading: false, error: action.error });
 
 const toggleAliveChars = state => ({
   ...state,

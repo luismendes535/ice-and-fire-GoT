@@ -1,6 +1,6 @@
 import React from "react";
 import "./Header.css";
 
-export default function Header() {
-  return <h1 className="Header">Ice and Fire </h1>;
-}
+const Header = () => <h1 className="Header">Ice and Fire </h1>;
+
+export default Header;

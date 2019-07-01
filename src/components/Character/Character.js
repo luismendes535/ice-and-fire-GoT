@@ -1,39 +1,42 @@
 import React from "react";
 import "./Character.css";
 import moment from "moment";
+import PropTypes from "prop-types";
 
-const Character = props => {
+const Character = ({
+  character: { name, aliases, gender, died, fetchedBooks } = {}
+}) => {
   return (
-    <div className={"Character"}>
-      {props.character.name && (
-        <div>
+    <div className={"Character"} data-test="characterComponent">
+      {name && (
+        <div data-test='characterName'>
           <b>Name: </b>
-          <div>{props.character.name}</div>
+          <div>{name}</div>
         </div>
       )}
-      {props.character.aliases && (
-        <div className={"Aliases"}>
+      {aliases[0].length > 0 && (
+        <div className={"Aliases"} data-test='characterAliases'>
           <b>Aliases: </b>
           <ul>
-            {props.character.aliases.map((alias, index) => (
-              <li>{(index ? ", " : "") + alias}</li>
+            {aliases.map((alias, index) => (
+              <li key={index}>{alias}</li>
             ))}
           </ul>
         </div>
       )}
-      <div>
+      <div data-test='characterGender'>
         <b>Gender: </b>
-        <div>{props.character.gender}</div>
+        <div>{gender}</div>
       </div>
-      <div>
+      <div data-test='characterIsAlive'>
         <b>Is alive: </b>
-        <div>{!props.character.died ? "Yes" : "No"}</div>
+        <div>{!died ? "Yes" : "No"}</div>
       </div>
-      <div className={"Books"}>
+      <div className={"Books"} data-test='characterBooks'>
         <b>Appear on: </b>
         <ul>
-          {props.character.fetchedBooks &&
-            props.character.fetchedBooks.map((book, id) => (
+          {fetchedBooks &&
+            fetchedBooks.map((book, id) => (
               <li key={id}>
                 {book.name} - {moment(book.released).format("MMMM Do YYYY")}
               </li>
@@ -43,4 +46,14 @@ const Character = props => {
     </div>
   );
 };
+
+Character.propTypes = {
+  character: PropTypes.shape({
+    name: PropTypes.string,
+    gender: PropTypes.string,
+    died: PropTypes.string,
+    fetchedBooks: PropTypes.array
+  })
+};
+
 export default Character;
